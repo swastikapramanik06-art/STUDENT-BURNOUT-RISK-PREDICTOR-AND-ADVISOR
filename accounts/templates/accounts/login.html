@@ -7,7 +7,7 @@
     <title>Student Burnout Advisor - Login</title>
     <link rel="stylesheet" href="{% static 'accounts/css/login_style.css' %}">
     <style>
-        /* This ensures the button sits inside the input field */
+       
         .password-wrapper {
             position: relative;
             display: flex;
@@ -22,9 +22,8 @@
             padding: 0;
             display: flex;
             align-items: center;
-            color: #667085; /* Gray color */
+            color: #667085; 
         }
-        /* Make sure the text doesn't hide under the eye */
         #password {
             padding-right: 40px; 
             width: 100%;
@@ -96,11 +95,10 @@
         const password = document.querySelector('#password');
 
         togglePassword.addEventListener('click', function (e) {
-            // Toggle the type attribute
+  
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
             
-            // Toggle the color of the eye icon to show it's active
             this.style.color = type === 'text' ? '#2563eb' : '#667085';
         });
     </script>

@@ -8,8 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 
-# --- LOAD ML ASSETS ---
-# These are loaded once when the server starts for better performance
+
 ML_DIR = os.path.join(settings.BASE_DIR, 'ml_assets')
 
 try:
@@ -20,7 +19,7 @@ except Exception as e:
     print(f"Error loading ML assets: {e}")
     MODEL, SCALER, FEATURES = None, None, None
 
-# --- REGISTRATION VIEW ---
+
 def register_view(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
@@ -31,7 +30,6 @@ def register_view(request):
         form = UserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
 
-# --- LOGIN VIEW ---
 def login_view(request):
     if request.method == "POST":
         u = request.POST.get('username')
@@ -44,16 +42,15 @@ def login_view(request):
             messages.error(request, "Invalid username or password.")
     return render(request, "accounts/login.html")
 
-# --- DASHBOARD VIEW ---
+
 @login_required(login_url='login')
 def dashboard_view(request):
     risk_result = None
     color_class = "low-risk"
-    solutions = []  # List to hold personalized advice
+    solutions = []  
 
     if request.method == 'POST':
         try:
-            # 1. Capture Form Data
             age = float(request.POST.get('age', 20))
             gender_str = request.POST.get('gender')
             gender = 1 if gender_str == 'male' else 0
@@ -66,7 +63,7 @@ def dashboard_view(request):
             anxiety_str = request.POST.get('anxiety')
             anxiety = 5 if anxiety_str == 'yes' else 1
 
-            # 2. Build the 18-Feature Set
+           
             input_dict = {
                 'age': age, 'gender': gender, 'course': 1, 'year': 3,
                 'daily_study_hours': study_hrs, 'daily_sleep_hours': sleep_hrs,
@@ -78,7 +75,7 @@ def dashboard_view(request):
                 'cgpa': cgpa, 'internet_quality': 3
             }
 
-            # 3. Predict using ML Model
+            
             df = pd.DataFrame([input_dict])
             df = df[FEATURES] 
 
@@ -96,7 +93,7 @@ def dashboard_view(request):
                     risk_result, color_class = "Low", "low-risk"
                     solutions.append("🟢 **Keep it up:** Your habits are maintaining a healthy balance.")
 
-                # 4. SMART SOLUTIONS (Based on specific habits)
+                
                 if sleep_hrs < 6:
                     solutions.append("😴 **Sleep:** Your sleep is below the 7-hour target. Try a 'no-screen' rule 30 mins before bed.")
                 
@@ -115,10 +112,10 @@ def dashboard_view(request):
     return render(request, 'accounts/dashboard.html', {
         'risk_result': risk_result, 
         'color_class': color_class,
-        'solutions': solutions  # Pass solutions to the template
+        'solutions': solutions  
     })
 
-# --- LOGOUT VIEW ---
+
 def logout_view(request):
     logout(request)
     return redirect('login')

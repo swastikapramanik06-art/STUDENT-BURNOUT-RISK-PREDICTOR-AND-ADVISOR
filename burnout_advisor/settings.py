@@ -117,12 +117,12 @@ USE_TZ = True
 
 import os
 
-# Scroll down to the Static section
+
 STATIC_URL = '/static/'
 
-# Add this to tell Django to look inside your app's static folder
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "accounts", "static"),
 ]
-# During development, emails are logged to the console
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ML_ASSETS_DIR = os.path.join(BASE_DIR, 'ml_assets')

@@ -46,7 +46,7 @@ p { color: #718f91; margin-bottom: 30px; }
     font-weight: bold;
     cursor: pointer;
 }
-/* Makes Django's auto-generated inputs look like yours */
+
 input[type="text"], 
 input[type="password"], 
 input[type="number"],
@@ -55,5 +55,5 @@ select {
     padding: 12px;
     border: 1px solid rgb(220, 221, 225);
     border-radius: 6px;
-    box-sizing: border-box; /* Crucial for layout */
+    box-sizing: border-box; 
 }

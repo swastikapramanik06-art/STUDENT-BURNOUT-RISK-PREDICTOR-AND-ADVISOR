@@ -1,4 +1,4 @@
-/* --- Global Reset & Fonts --- */
+
 * {
     margin: 0;
     padding: 0;
@@ -12,9 +12,9 @@ body {
     line-height: 1.6;
 }
 
-/* --- Header Section --- */
+
 header {
-    height: 40vh; /* Adjusted from 60% for better laptop viewing */
+    height: 40vh; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,7 +32,7 @@ header {
 }
 
 .accent {
-    color: rgb(16, 185, 129); /* Emerald Green */
+    color: rgb(16, 185, 129); 
 }
 
 .divider {
@@ -43,7 +43,7 @@ header {
     border-radius: 2px;
 }
 
-/* --- Navigation --- */
+
 nav {
     background: rgb(30, 41, 59);
     position: sticky;
@@ -73,7 +73,7 @@ nav ul li a:hover {
     color: white;
 }
 
-/* --- Media Section (Images & Video) --- */
+
 .media-section {
     padding: 60px 20px;
     background: rgb(10, 15, 28);
@@ -116,7 +116,7 @@ nav ul li a:hover {
     object-fit: cover;
 }
 
-/* --- Assessment Form Section --- */
+
 .form-section {
     max-width: 800px;
     margin: 60px auto;
@@ -145,7 +145,7 @@ h3 {
     color: #f1f5f9;
 }
 
-/* --- Inputs --- */
+
 input, select {
     width: 100%;
     padding: 12px;
@@ -163,7 +163,6 @@ input, select {
     gap: 15px;
 }
 
-/* --- Mental Wellness Radio Group --- */
 .check-group {
     background: #1e293b;
     padding: 15px;
@@ -177,7 +176,7 @@ input, select {
     font-size: 0.95rem;
 }
 
-/* --- Result Section Styling --- */
+
 .result-display {
     max-width: 800px;
     margin: 20px auto;
@@ -191,7 +190,7 @@ input, select {
 .mod-risk { background: rgba(245, 158, 11, 0.15); border: 2px solid #f59e0b; }
 .low-risk { background: rgba(16, 185, 129, 0.15); border: 2px solid #10b981; }
 
-/* --- Button --- */
+
 .predict {
     width: 100%;
     padding: 16px;

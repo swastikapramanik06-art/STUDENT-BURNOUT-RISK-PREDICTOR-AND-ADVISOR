@@ -7,7 +7,7 @@
     <title>Sign Up - Burnout Insight</title>
     <link rel="stylesheet" href="{% static 'accounts/css/login_style.css' %}">
     <style>
-        /* Ensuring Django's auto-generated form fits your style */
+        
         .login-card {
             max-width: 450px;
             padding: 40px;
@@ -18,7 +18,7 @@
             margin-bottom: 15px;
             color: #2d3436;
             font-size: 0.9rem;
-            position: relative; /* Needed for absolute positioning of eye */
+            position: relative; 
         }
         .registration-form input {
             width: 100%;
@@ -27,14 +27,14 @@
             border: 1px solid #dfe6e9;
             border-radius: 6px;
             display: block;
-            padding-right: 40px; /* Space for the eye icon */
+            padding-right: 40px; 
         }
         
-        /* The Eye Button Styling */
+      
         .eye-toggle {
             position: absolute;
             right: 10px;
-            top: 35px; /* Adjust based on your label height */
+            top: 35px;
             background: none;
             border: none;
             cursor: pointer;
@@ -78,13 +78,13 @@
     </div>
 
     <script>
-        // Wait for the page to load
+        
         document.addEventListener('DOMContentLoaded', function() {
-            // Find all password inputs (usually 2 in registration)
+         
             const passwordInputs = document.querySelectorAll('input[type="password"]');
             
             passwordInputs.forEach((input, index) => {
-                // Create the button
+             
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'eye-toggle';
@@ -95,12 +95,12 @@
                     </svg>
                 `;
 
-                // Wrap input and button for positioning
+               
                 const wrapper = input.parentElement;
                 wrapper.style.position = 'relative';
                 wrapper.appendChild(btn);
 
-                // Add click event
+              
                 btn.addEventListener('click', function() {
                     const isPassword = input.getAttribute('type') === 'password';
                     input.setAttribute('type', isPassword ? 'text' : 'password');
