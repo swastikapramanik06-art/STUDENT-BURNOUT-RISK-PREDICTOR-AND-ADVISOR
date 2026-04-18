@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Burnout Insight</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/login_style.css' %}">
+    <style>
+        /* Ensuring Django's auto-generated form fits your style */
+        .login-card {
+            max-width: 450px;
+            padding: 40px;
+            position: relative;
+        }
+        .registration-form p {
+            text-align: left;
+            margin-bottom: 15px;
+            color: #2d3436;
+            font-size: 0.9rem;
+            position: relative; /* Needed for absolute positioning of eye */
+        }
+        .registration-form input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #dfe6e9;
+            border-radius: 6px;
+            display: block;
+            padding-right: 40px; /* Space for the eye icon */
+        }
+        
+        /* The Eye Button Styling */
+        .eye-toggle {
+            position: absolute;
+            right: 10px;
+            top: 35px; /* Adjust based on your label height */
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #636e72;
+            padding: 0;
+            z-index: 10;
+        }
+
+        .helptext {
+            display: block;
+            font-size: 0.75rem;
+            color: #636e72;
+            margin-top: 4px;
+        }
+        .errorlist {
+            color: #d63031;
+            font-size: 0.8rem;
+            list-style: none;
+            padding: 0;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Join Us</h2>
+        <p>Create an account to start your wellness journey.</p>
+
+        <form method="POST" class="registration-form" id="regForm">
+            {% csrf_token %}
+            
+            {{ form.as_p }}
+
+            <button type="submit" class="login-btn" style="margin-top: 10px;">Create Account</button>
+        </form>
+
+        <div class="footer-text">
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Wait for the page to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all password inputs (usually 2 in registration)
+            const passwordInputs = document.querySelectorAll('input[type="password"]');
+            
+            passwordInputs.forEach((input, index) => {
+                // Create the button
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'eye-toggle';
+                btn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                `;
+
+                // Wrap input and button for positioning
+                const wrapper = input.parentElement;
+                wrapper.style.position = 'relative';
+                wrapper.appendChild(btn);
+
+                // Add click event
+                btn.addEventListener('click', function() {
+                    const isPassword = input.getAttribute('type') === 'password';
+                    input.setAttribute('type', isPassword ? 'text' : 'password');
+                    btn.style.color = isPassword ? '#2563eb' : '#636e72';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

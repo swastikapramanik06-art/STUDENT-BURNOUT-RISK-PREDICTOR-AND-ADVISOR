@@ -1,0 +1,218 @@
+/* --- Global Reset & Fonts --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: rgb(15, 23, 42); /* Dark Navy */
+    color: rgb(248, 250, 252);
+    line-height: 1.6;
+}
+
+/* --- Header Section --- */
+header {
+    height: 40vh; /* Adjusted from 60% for better laptop viewing */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    padding: 0 20px;
+}
+
+.header-items h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.accent {
+    color: rgb(16, 185, 129); /* Emerald Green */
+}
+
+.divider {
+    width: 60px;
+    height: 4px;
+    background: rgb(16, 185, 129);
+    margin: 15px auto;
+    border-radius: 2px;
+}
+
+/* --- Navigation --- */
+nav {
+    background: rgb(30, 41, 59);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    list-style: none;
+    padding: 20px 0;
+}
+
+nav ul li a {
+    color: rgb(148, 163, 184);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: white;
+}
+
+/* --- Media Section (Images & Video) --- */
+.media-section {
+    padding: 60px 20px;
+    background: rgb(10, 15, 28);
+}
+
+.media-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.media-items img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    filter: brightness(0.7);
+    transition: 0.4s ease;
+}
+
+.media-items img:hover {
+    filter: brightness(1);
+    transform: scale(1.02);
+}
+
+.videobox {
+    width: 450px;
+    height: 250px;
+    background: black;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #334155;
+}
+
+.animated-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Assessment Form Section --- */
+.form-section {
+    max-width: 800px;
+    margin: 60px auto;
+    background: rgb(30, 41, 59);
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.form-segment {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+h2 {
+    color: rgb(16, 185, 129);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #f1f5f9;
+}
+
+/* --- Inputs --- */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* --- Mental Wellness Radio Group --- */
+.check-group {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.check-group label {
+    margin-right: 20px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+/* --- Result Section Styling --- */
+.result-display {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    animation: slideIn 0.5s ease;
+}
+
+.high-risk { background: rgba(239, 68, 68, 0.15); border: 2px solid #ef4444; }
+.mod-risk { background: rgba(245, 158, 11, 0.15); border: 2px solid #f59e0b; }
+.low-risk { background: rgba(16, 185, 129, 0.15); border: 2px solid #10b981; }
+
+/* --- Button --- */
+.predict {
+    width: 100%;
+    padding: 16px;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+.predict:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4);
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

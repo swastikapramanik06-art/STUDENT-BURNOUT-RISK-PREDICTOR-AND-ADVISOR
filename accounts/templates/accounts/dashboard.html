@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burnout Predictor - Dashboard</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard_style.css' %}">
+    <style>
+        /* Result Box Styling */
+        .result-container {
+            max-width: 850px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            background: #1e293b;
+            border: 2px solid #10b981;
+            animation: fadeIn 0.6s ease-in;
+        }
+        .high-risk { 
+    border: 2px solid #ef4444 !important; /* Red */
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
+.mod-risk { 
+    border: 2px solid #f59e0b !important; /* Yellow/Orange */
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+}
+.low-risk { 
+    border: 2px solid #10b981 !important; /* Green */
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+/* Also color the text inside the span to match */
+.high-risk .accent { color: #ef4444; }
+.mod-risk .accent { color: #f59e0b; }
+.low-risk .accent { color: #10b981; }
+
+        /* Solutions Section Styling */
+        .solutions-container {
+            max-width: 850px;
+            margin: 20px auto;
+            padding: 25px;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 14px;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            text-align: left;
+            animation: fadeIn 0.8s ease-out;
+        }
+        .solutions-header {
+            color: #10b981;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .solutions-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .solution-item {
+            color: #e2e8f0;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+            line-height: 1.6;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Quote Rotator Box */
+        .quote-rotator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 30px 28px;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 1px solid #10b981;
+            border-radius: 14px;
+            min-height: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+        .quote-icon { font-size: 2rem; }
+        .quote-text { color: #e2e8f0; font-size: 1rem; font-style: italic; text-align: center; transition: opacity 0.5s; }
+        .quote-tag { font-size: 0.75rem; color: #10b981; background: #10b98120; padding: 4px 12px; border-radius: 20px; }
+        .quote-dots { display: flex; gap: 6px; margin-top: 6px; }
+        .quote-dots span { width: 8px; height: 8px; border-radius: 50%; background: #334155; }
+        .quote-dots span.active { background: #10b981; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-items">
+            <h1>BURNOUT <span class="accent">INSIGHT</span></h1>
+            <div class="divider"></div>
+            <p>Data-driven burnout risk assessment and recovery for the modern student.</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#">HOME</a></li>
+            <li><a href="#process">PROCESS</a></li>
+            <li><a href="#predictor">PREDICTOR</a></li>
+            <li><a href="{% url 'logout' %}">LOGOUT</a></li>
+        </ul>
+    </nav>
+
+    {% if risk_result %}
+    <div class="result-container {{ color_class }}">
+        <h2 style="color: white;">Assessment Result: <span class="accent">{{ risk_result }} Risk</span></h2>
+        <p style="color: #94a3bc;">Your data indicates a {{ risk_result|lower }} risk of academic burnout.</p>
+    </div>
+
+    {% if solutions %}
+    <div class="solutions-container">
+        <div class="solutions-header">
+            <span>💡</span> Recommended Recovery Plan
+        </div>
+        <ul class="solutions-list">
+            {% for tip in solutions %}
+            <li class="solution-item">
+                {{ tip|safe }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <section class="media-section">
+        <div class="media-items">
+            <img src="https://images.unsplash.com/photo-1713006615995-acc452dde2e2?w=500&auto=format&fit=crop&q=60" alt="Student Studying">
+            <div class="videobox quote-rotator">
+                <div class="quote-icon">💡</div>
+                <p class="quote-text" id="quoteText">"Click the button below to start your assessment."</p>
+                <span class="quote-tag" id="quoteTag">Daily Tip</span>
+                <div class="quote-dots" id="quoteDots"></div>
+            </div>
+            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=500&q=80" alt="Mental Health">
+        </div>
+    </section>
+
+    <section id="predictor" class="form-section">
+        <h2>Burnout Risk Assessment</h2>
+        <form id="burnoutForm" method="POST">
+            {% csrf_token %}
+            
+            <div class="form-segment">
+                <h3>Personal Details</h3>
+                <div class="input-row">
+                    <input type="number" name="age" placeholder="Age" required>
+                    <select name="gender" required>
+                        <option value="">Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <input type="text" name="course" placeholder="Course" required>
+            </div>
+
+            <div class="form-segment">
+                <h3>Academic & Lifestyle Habits</h3>
+                <div class="input-row">
+                    <input type="number" step="0.01" name="cgpa" placeholder="Current CGPA" required>
+                    <input type="number" name="attendance" placeholder="Attendance %" required>
+                </div>
+                <label>Daily Routine (Hours):</label>
+                <div class="input-row">
+                    <input type="number" name="study_hours" placeholder="Study Hours" required>
+                    <input type="number" name="sleep_hours" placeholder="Sleep Hours" required>
+                </div>
+            </div>
+
+            <div class="form-segment">
+                <h3>Mental Wellness Check-in</h3>
+                <div class="check-group">
+                    <p>Is academic pressure overwhelming?</p>
+                    <label><input type="radio" name="pressure" value="yes"> Yes</label>
+                    <label><input type="radio" name="pressure" value="no"> No</label>
+                </div>
+                <div class="check-group">
+                    <p>Do you experience frequent anxiety?</p>
+                    <label><input type="radio" name="anxiety" value="yes"> Yes</label>
+                    <label><input type="radio" name="anxiety" value="no"> No</label>
+                </div>
+            </div>
+
+            <button type="submit" class="predict">Analyze Risk</button>
+        </form>
+    </section>
+
+    <script>
+        const quotes = [
+            { text: "Rest is not a reward — it's a requirement for peak performance.", tag: "🧠 Recovery" },
+            { text: "You can't pour from an empty cup. Take care of yourself first.", tag: "❤️ Self-Care" },
+            { text: "Small breaks prevent big burnouts. Step away before you break down.", tag: "⏸️ Breaks" },
+            { text: "Your CGPA doesn't define your worth. Your well-being does.", tag: "📊 Perspective" },
+            { text: "Sleep is your brain's save button. Don't skip it.", tag: "🌙 Sleep" },
+            { text: "Stress is temporary. The habits you build now last a lifetime.", tag: "🌱 Habits" },
+        ];
+
+        let current = 0;
+        const textEl = document.getElementById('quoteText');
+        const tagEl = document.getElementById('quoteTag');
+        const dotsEl = document.getElementById('quoteDots');
+
+        function buildDots() {
+            dotsEl.innerHTML = quotes.map((_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('');
+        }
+
+        function showQuote(index) {
+            textEl.style.opacity = 0;
+            setTimeout(() => {
+                textEl.textContent = `"${quotes[index].text}"`;
+                tagEl.textContent = quotes[index].tag;
+                textEl.style.opacity = 1;
+                dotsEl.querySelectorAll('span').forEach((d, i) => d.classList.toggle('active', i === index));
+            }, 400);
+        }
+
+        buildDots();
+        showQuote(0);
+        setInterval(() => {
+            current = (current + 1) % quotes.length;
+            showQuote(current);
+        }, 4000);
+    </script>
+</body>
+</html>
