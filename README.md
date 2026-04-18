@@ -21,7 +21,7 @@ This is a full-stack web application built using Django and Machine Learning tha
 ## 🛠️ Setup Instructions
 
 ```bash
-git clone https://github.com/your-username/STUDENT-BURNOUT-RISK-PREDICTOR-AND-ADVISOR.git
+git clone https://github.com/swastikapramanik06-art/STUDENT-BURNOUT-RISK-PREDICTOR-AND-ADVISOR.git
 cd STUDENT-BURNOUT-RISK-PREDICTOR-AND-ADVISOR
 pip install -r requirements.txt
 python manage.py runserver
