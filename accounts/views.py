@@ -46,11 +46,12 @@ def login_view(request):
 @login_required(login_url='login')
 def dashboard_view(request):
     risk_result = None
-    color_class = "low-risk"
+    color_class = ""  
     solutions = []  
 
     if request.method == 'POST':
         try:
+           
             age = float(request.POST.get('age', 20))
             gender_str = request.POST.get('gender')
             gender = 1 if gender_str == 'male' else 0
@@ -75,40 +76,39 @@ def dashboard_view(request):
                 'cgpa': cgpa, 'internet_quality': 3
             }
 
-            
             df = pd.DataFrame([input_dict])
             df = df[FEATURES] 
-
             if MODEL and SCALER:
+            
                 scaled_data = SCALER.transform(df)
                 prediction = MODEL.predict(scaled_data)[0]
 
                 if prediction == 2:
                     risk_result, color_class = "High", "high-risk"
-                    solutions.append("🔴 **Priority:** Speak with an academic counselor to discuss workload management.")
+                    solutions.append("🔴 **Priority:** Immediate intervention required. Please speak with an academic counselor.")
                 elif prediction == 1:
                     risk_result, color_class = "Moderate", "mod-risk"
-                    solutions.append("🟡 **Action:** Schedule a mandatory rest day this weekend to recharge.")
+                    solutions.append("🟡 **Action:** You are showing signs of stress. Schedule a mandatory rest day this weekend.")
                 else:
                     risk_result, color_class = "Low", "low-risk"
-                    solutions.append("🟢 **Keep it up:** Your habits are maintaining a healthy balance.")
+                    solutions.append("🟢 **Healthy:** You are managing well! Keep maintaining this balance.")
 
-                
                 if sleep_hrs < 6:
-                    solutions.append("😴 **Sleep:** Your sleep is below the 7-hour target. Try a 'no-screen' rule 30 mins before bed.")
+                    solutions.append("😴 **Sleep Alert:** You're below 6 hours. Lack of REM sleep significantly increases anxiety.")
                 
                 if study_hrs > 9:
-                    solutions.append("📚 **Study:** High study hours detected. Use the Pomodoro Technique (50m study/10m break) to avoid brain fatigue.")
+                    solutions.append("📚 **Study Habit:** High study hours detected. Practice the 50/10 Pomodoro rule to prevent brain fog.")
                 
-                if pressure_str == 'yes':
-                    solutions.append("🧘 **Stress:** Practice 5 minutes of mindful meditation daily to lower cortisol levels.")
+                if pressure_str == 'yes' or anxiety_str == 'yes':
+                    solutions.append("🧘 **Wellness:** Try 5 minutes of mindful breathing twice a day to lower cortisol levels.")
 
             else:
-                messages.error(request, "ML Model not loaded properly.")
+                messages.error(request, "ML Model assets are not loaded. Contact admin.")
 
         except Exception as e:
-            messages.error(request, f"Processing Error: {e}")
+            messages.error(request, f"Calculation Error: {e}")
 
+   
     return render(request, 'accounts/dashboard.html', {
         'risk_result': risk_result, 
         'color_class': color_class,

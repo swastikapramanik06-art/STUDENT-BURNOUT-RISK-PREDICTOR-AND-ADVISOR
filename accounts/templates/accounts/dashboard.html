@@ -7,7 +7,12 @@
     <title>Burnout Predictor - Dashboard</title>
     <link rel="stylesheet" href="{% static 'accounts/css/dashboard_style.css' %}">
     <style>
+        /* 1. Global & Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
 
+        /* 2. Result Box Styling */
         .result-container {
             max-width: 850px;
             margin: 20px auto;
@@ -15,27 +20,19 @@
             border-radius: 12px;
             text-align: center;
             background: #1e293b;
-            border: 2px solid #10b981;
             animation: fadeIn 0.6s ease-in;
         }
-        .high-risk { 
-    border: 2px solid #ef4444 !important; 
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
-}
-.mod-risk { 
-    border: 2px solid #f59e0b !important; 
-    box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
-}
-.low-risk { 
-    border: 2px solid #10b981 !important; 
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-}
+        
+        /* Specific Risk Colors */
+        .high-risk { border: 2px solid #ef4444 !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
+        .mod-risk { border: 2px solid #f59e0b !important; box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
+        .low-risk { border: 2px solid #10b981 !important; box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
 
+        .high-risk .accent { color: #ef4444; }
+        .mod-risk .accent { color: #f59e0b; }
+        .low-risk .accent { color: #10b981; }
 
-.high-risk .accent { color: #ef4444; }
-.mod-risk .accent { color: #f59e0b; }
-.low-risk .accent { color: #10b981; }
-
+        /* 3. Solutions Section */
         .solutions-container {
             max-width: 850px;
             margin: 20px auto;
@@ -55,11 +52,6 @@
             align-items: center;
             gap: 10px;
         }
-        .solutions-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
         .solution-item {
             color: #e2e8f0;
             padding: 12px 15px;
@@ -70,26 +62,31 @@
             line-height: 1.6;
         }
 
+        /* 4. Process Section Cards */
+        .process-card {
+            background: #1e293b; 
+            padding: 25px; 
+            border-radius: 12px; 
+            border-top: 4px solid #10b981;
+            transition: transform 0.3s ease;
+        }
+        .process-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 5. Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Quote Rotator (Existing styles) */
         .quote-rotator {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            padding: 30px 28px;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            border: 1px solid #10b981;
-            border-radius: 14px;
-            min-height: 240px;
-            position: relative;
-            overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 14px; padding: 30px 28px; background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 1px solid #10b981; border-radius: 14px; min-height: 240px;
+            position: relative; overflow: hidden;
         }
-        .quote-icon { font-size: 2rem; }
         .quote-text { color: #e2e8f0; font-size: 1rem; font-style: italic; text-align: center; transition: opacity 0.5s; }
         .quote-tag { font-size: 0.75rem; color: #10b981; background: #10b98120; padding: 4px 12px; border-radius: 20px; }
         .quote-dots { display: flex; gap: 6px; margin-top: 6px; }
@@ -124,16 +121,12 @@
 
     {% if solutions %}
     <div class="solutions-container">
-        <div class="solutions-header">
-            <span>💡</span> Recommended Recovery Plan
-        </div>
-        <ul class="solutions-list">
+        <div class="solutions-header"><span>💡</span> Recommended Recovery Plan</div>
+        <div style="list-style: none; padding: 0;">
             {% for tip in solutions %}
-            <li class="solution-item">
-                {{ tip|safe }}
-            </li>
+            <div class="solution-item">{{ tip|safe }}</div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
     {% endif %}
     {% endif %}
@@ -143,7 +136,7 @@
             <img src="https://images.unsplash.com/photo-1713006615995-acc452dde2e2?w=500&auto=format&fit=crop&q=60" alt="Student Studying">
             <div class="videobox quote-rotator">
                 <div class="quote-icon">💡</div>
-                <p class="quote-text" id="quoteText">"Click the button below to start your assessment."</p>
+                <p class="quote-text" id="quoteText">Predicting your well-being...</p>
                 <span class="quote-tag" id="quoteTag">Daily Tip</span>
                 <div class="quote-dots" id="quoteDots"></div>
             </div>
@@ -151,31 +144,39 @@
         </div>
     </section>
 
+    <section id="process" style="max-width: 1000px; margin: 80px auto; padding: 20px;">
+        <h2 style="text-align: center; color: #10b981; margin-bottom: 40px; font-size: 2rem;">The Prediction Process</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+            <div class="process-card">
+                <h3 style="color: #10b981;">01. Data Input</h3>
+                <p style="color: #94a3bc;">We collect academic (CGPA, Attendance) and lifestyle (Sleep, Study hours) metrics to understand your routine.</p>
+            </div>
+            <div class="process-card">
+                <h3 style="color: #10b981;">02. Random Forest Analysis</h3>
+                <p style="color: #94a3bc;">Our trained ML model analyzes your inputs against known burnout triggers and standard correlations.</p>
+            </div>
+            <div class="process-card">
+                <h3 style="color: #10b981;">03. Prescriptive Output</h3>
+                <p style="color: #94a3bc;">You receive a risk classification and a tailored solution plan to help mitigate stress levels effectively.</p>
+            </div>
+        </div>
+    </section>
+
     <section id="predictor" class="form-section">
-        <h2>Burnout Risk Assessment</h2>
+        <h2 style="text-align: center; color: white;">Risk Assessment Tool</h2>
         <form id="burnoutForm" method="POST">
             {% csrf_token %}
-            
             <div class="form-segment">
-                <h3>Personal Details</h3>
+                <h3>Personal & Academic Details</h3>
                 <div class="input-row">
                     <input type="number" name="age" placeholder="Age" required>
-                    <select name="gender" required>
-                        <option value="">Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
+                    <input type="number" step="0.01" name="cgpa" placeholder="CGPA" required>
+                    <input type="number" name="attendance" placeholder="Attendance %" required>
                 </div>
-                <input type="text" name="course" placeholder="Course" required>
             </div>
 
             <div class="form-segment">
-                <h3>Academic & Lifestyle Habits</h3>
-                <div class="input-row">
-                    <input type="number" step="0.01" name="cgpa" placeholder="Current CGPA" required>
-                    <input type="number" name="attendance" placeholder="Attendance %" required>
-                </div>
-                <label>Daily Routine (Hours):</label>
+                <h3>Daily Lifestyle (Hours)</h3>
                 <div class="input-row">
                     <input type="number" name="study_hours" placeholder="Study Hours" required>
                     <input type="number" name="sleep_hours" placeholder="Sleep Hours" required>
@@ -183,20 +184,20 @@
             </div>
 
             <div class="form-segment">
-                <h3>Mental Wellness Check-in</h3>
+                <h3>Wellness Pulse</h3>
                 <div class="check-group">
-                    <p>Is academic pressure overwhelming?</p>
-                    <label><input type="radio" name="pressure" value="yes"> Yes</label>
+                    <p>Feeling overwhelmed by academic pressure?</p>
+                    <label><input type="radio" name="pressure" value="yes" required> Yes</label>
                     <label><input type="radio" name="pressure" value="no"> No</label>
                 </div>
                 <div class="check-group">
-                    <p>Do you experience frequent anxiety?</p>
-                    <label><input type="radio" name="anxiety" value="yes"> Yes</label>
+                    <p>Experiencing frequent anxiety?</p>
+                    <label><input type="radio" name="anxiety" value="yes" required> Yes</label>
                     <label><input type="radio" name="anxiety" value="no"> No</label>
                 </div>
             </div>
 
-            <button type="submit" class="predict">Analyze Risk</button>
+            <button type="submit" class="predict">Analyze My Risk</button>
         </form>
     </section>
 
@@ -206,8 +207,7 @@
             { text: "You can't pour from an empty cup. Take care of yourself first.", tag: "❤️ Self-Care" },
             { text: "Small breaks prevent big burnouts. Step away before you break down.", tag: "⏸️ Breaks" },
             { text: "Your CGPA doesn't define your worth. Your well-being does.", tag: "📊 Perspective" },
-            { text: "Sleep is your brain's save button. Don't skip it.", tag: "🌙 Sleep" },
-            { text: "Stress is temporary. The habits you build now last a lifetime.", tag: "🌱 Habits" },
+            { text: "Sleep is your brain's save button. Don't skip it.", tag: "🌙 Sleep" }
         ];
 
         let current = 0;
@@ -234,7 +234,7 @@
         setInterval(() => {
             current = (current + 1) % quotes.length;
             showQuote(current);
-        }, 4000);
+        }, 4500);
     </script>
 </body>
 </html>
