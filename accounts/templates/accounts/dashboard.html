@@ -7,12 +7,11 @@
     <title>Burnout Predictor - Dashboard</title>
     <link rel="stylesheet" href="{% static 'accounts/css/dashboard_style.css' %}">
     <style>
-        /* 1. Global & Smooth Scroll */
+    
         html {
             scroll-behavior: smooth;
         }
 
-        /* 2. Result Box Styling */
         .result-container {
             max-width: 850px;
             margin: 20px auto;
@@ -23,7 +22,7 @@
             animation: fadeIn 0.6s ease-in;
         }
         
-        /* Specific Risk Colors */
+    
         .high-risk { border: 2px solid #ef4444 !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
         .mod-risk { border: 2px solid #f59e0b !important; box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
         .low-risk { border: 2px solid #10b981 !important; box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
@@ -32,7 +31,7 @@
         .mod-risk .accent { color: #f59e0b; }
         .low-risk .accent { color: #10b981; }
 
-        /* 3. Solutions Section */
+     
         .solutions-container {
             max-width: 850px;
             margin: 20px auto;
@@ -62,7 +61,7 @@
             line-height: 1.6;
         }
 
-        /* 4. Process Section Cards */
+       
         .process-card {
             background: #1e293b; 
             padding: 25px; 
@@ -74,13 +73,13 @@
             transform: translateY(-5px);
         }
 
-        /* 5. Animation */
+      
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Quote Rotator (Existing styles) */
+        
         .quote-rotator {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: 14px; padding: 30px 28px; background: linear-gradient(135deg, #0f172a, #1e293b);
