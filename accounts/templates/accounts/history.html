@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellness History | Student Burnout Predictor</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard_style.css' %}">
+    <style>
+    .history-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background: #ffffff; 
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        color: #333333; 
+    }
+
+    h1 {
+        color: #1a1a1a; 
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #666666; 
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+        color: #333333; 
+    }
+
+    th {
+        text-align: left;
+        padding: 15px;
+        background-color: #f8f9fa;
+        color: #1a1a1a; 
+        border-bottom: 2px solid #eeeeee;
+        font-weight: bold;
+    }
+
+    td {
+        padding: 15px;
+        border-bottom: 1px solid #f0f0f0;
+        color: #444444;
+        font-size: 0.95rem;
+    }
+
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        text-decoration: none;
+        color: #2c3e50; 
+        font-weight: 600;
+    }
+
+    .back-btn:hover {
+        color: #3498db;
+    }
+</style>
+</head>
+<body>
+
+    <div class="history-container">
+        <a href="{% url 'dashboard' %}" class="back-btn">← Back to Dashboard</a>
+        
+        <h1>Model Analysis History</h1>
+        <p>Track your previous burnout risk assessments and trends.</p>
+
+        <table class="history-table">
+    <thead>
+        <tr>
+            <th>Date & Time</th>
+            <th>Risk Level</th>
+            <th>Sleep</th>
+            <th>Analysis Report</th> </tr>
+    </thead>
+    <tbody>
+        {% for record in history %}
+        <tr>
+            <td>{{ record.date_created|date:"d M Y, h:i A" }}</td>
+            <td>
+                <span class="badge {{ record.status|lower }}">{{ record.status }}</span>
+            </td>
+            <td>{{ record.sleep_hours }}h</td>
+            <td style="text-align: left;">
+    <div style="margin-bottom: 5px;">
+        <strong style="color: #10b981;">Strengths:</strong> 
+        <span>{{ record.strengths|default:"No data recorded for this session" }}</span>
+    </div>
+    <div>
+        <strong style="color: #ef4444;">Risks:</strong> 
+        <span>{{ record.risk_factors|default:"No data recorded for this session" }}</span>
+    </div>
+</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" style="text-align: center; padding: 40px; color: #666;">
+                No assessments found. Visit the dashboard to run your first analysis!
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    </div>
+
+</body>
+</html>

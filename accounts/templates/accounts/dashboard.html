@@ -9,23 +9,47 @@
     <style>
         html { scroll-behavior: smooth; }
 
+        
+        body { background-color: #0f172a; color: #f1f5f9; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        .accent { color: #10b981; }
+
+        nav {
+            background: rgba(30, 41, 59, 0.95);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        nav ul { display: flex; justify-content: center; gap: 40px; list-style: none; margin: 0; padding: 0; }
+        nav a { text-decoration: none; color: #94a3b8; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        nav a:hover { color: #10b981; }
+
+        .process-container { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+        .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .process-card {
+            background: #1e293b; 
+            padding: 30px; 
+            border-radius: 12px; 
+            border-top: 4px solid #10b981;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .process-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .process-card h3 { color: #10b981; margin-bottom: 15px; }
+        .process-card p { color: #94a3bc; line-height: 1.6; font-size: 0.95rem; }
+
         .result-container {
             max-width: 850px;
-            margin: 20px auto;
-            padding: 20px;
+            margin: 40px auto;
+            padding: 30px;
             border-radius: 12px;
             text-align: center;
             background: #1e293b;
-            animation: fadeIn 0.6s ease-in;
         }
-        
-        .high-risk { border: 2px solid #ef4444 !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
-        .mod-risk { border: 2px solid #f59e0b !important; box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
-        .low-risk { border: 2px solid #10b981 !important; box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
-
-        .high-risk .accent { color: #ef4444; }
-        .mod-risk .accent { color: #f59e0b; }
-        .low-risk .accent { color: #10b981; }
+        .high-risk { border: 2px solid #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.1); }
+        .mod-risk { border: 2px solid #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.1); }
+        .low-risk { border: 2px solid #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.1); }
 
         .analysis-grid {
             display: grid;
@@ -33,223 +57,242 @@
             gap: 25px;
             max-width: 900px;
             margin: 20px auto;
-            animation: fadeIn 0.8s ease-out;
         }
-
-        .solutions-container {
-            padding: 25px;
-            background: rgba(30, 41, 59, 0.9);
-            border-radius: 14px;
-            text-align: left;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
+        .box { padding: 25px; border-radius: 14px; background: rgba(30, 41, 59, 0.9); }
         .pros-box { border-top: 5px solid #10b981; }
         .cons-box { border-top: 5px solid #ef4444; }
 
-        .solutions-header {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+       
+        .form-section { max-width: 850px; margin: 60px auto; padding: 40px; background: #1e293b; border-radius: 16px; }
+        .form-segment { margin-bottom: 30px; }
+        .input-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px; }
+        input[type="number"] {
+            flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #334155;
+            background: #0f172a; color: white; min-width: 200px;
         }
-
-        .solution-item {
-            color: #e2e8f0;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            line-height: 1.6;
-            font-size: 0.9rem;
+        .predict-btn {
+            width: 100%; padding: 16px; background: #10b981; color: white;
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem;
+            transition: 0.3s; margin-top: 20px;
         }
+        .predict-btn:hover { background: #059669; transform: scale(1.01); }
 
-        .pro-item { border-left: 4px solid #10b981; }
-        .con-item { border-left: 4px solid #ef4444; }
-
-        .process-card {
-            background: #1e293b; 
-            padding: 25px; 
-            border-radius: 12px; 
-            border-top: 4px solid #10b981;
-            transition: transform 0.3s ease;
-        }
-        .process-card:hover { transform: translateY(-5px); }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+       
         .quote-rotator {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 14px; padding: 30px 28px; background: linear-gradient(135deg, #0f172a, #1e293b);
-            border: 1px solid #10b981; border-radius: 14px; min-height: 240px;
-            position: relative; overflow: hidden;
+            max-width: 850px; margin: 40px auto; padding: 30px;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 1px solid #10b981; border-radius: 14px; text-align: center;
         }
-        .quote-text { color: #e2e8f0; font-size: 1rem; font-style: italic; text-align: center; transition: opacity 0.5s; }
-        .quote-tag { font-size: 0.75rem; color: #10b981; background: #10b98120; padding: 4px 12px; border-radius: 20px; }
-        .quote-dots { display: flex; gap: 6px; margin-top: 6px; }
-        .quote-dots span { width: 8px; height: 8px; border-radius: 50%; background: #334155; }
-        .quote-dots span.active { background: #10b981; }
+        .mental-pulse-section {
+    text-align: left;
+    padding: 20px;
+}
+
+.question-group {
+    margin-bottom: 20px;
+}
+
+.question-group p {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin: 0; 
+}
+
+.option label {
+    cursor: pointer;
+    font-size: 1rem;
+    color: #ffffff;
+}
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-items">
-            <h1>BURNOUT <span class="accent">INSIGHT</span></h1>
-            <div class="divider"></div>
-            <p>Data-driven burnout risk assessment for GNIT students.</p>
-        </div>
-    </header>
-
+    <header style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 20px; width: 100%;">
+    <h1 style="font-size: 3rem; margin: 0 0 10px 0; width: 100%;">
+        BURNOUT <span class="accent" style="color: #10b981;">INSIGHT</span>
+    </h1>
+    
+    <p style="color: #94a3b8; font-size: 1.2rem; margin: 0; width: 100%;">
+        Welcome, <span class="accent" style="color: #10b981;">{{ user.username|capfirst }}</span>. Let's analyze your wellbeing.
+    </p>
+</header>
     <nav>
         <ul>
             <li><a href="#">HOME</a></li>
+            <li><a href="{% url 'history' %}">HISTORY</a></li>
             <li><a href="#process">PROCESS</a></li>
+                    
             <li><a href="#predictor">PREDICTOR</a></li>
             <li><a href="{% url 'logout' %}">LOGOUT</a></li>
         </ul>
     </nav>
 
+    <section id="process" class="process-container">
+        <h2 style="text-align: center; color: #10b981; margin-bottom: 50px; font-size: 2rem;">The Assessment Process</h2>
+        <div class="process-grid">
+            <div class="process-card">
+                <h3>01. Data Collection</h3>
+                <p>We process your academic and lifestyle inputs using specialized scaling methods to ensure accuracy.</p>
+            </div>
+            <div class="process-card">
+                <h3>02. Model Analysis</h3>
+                <p>Our predictive engine identifies stress correlations within your daily routine patterns to ensure accurate risk assessment.</p>
+            </div>
+            <div class="process-card">
+                <h3>03. Recovery Plan</h3>
+                <p>Receive immediate, actionable feedback on your strengths and areas needing attention.</p>
+            </div>
+        </div>
+    </section>
+
     {% if risk_result %}
     <div class="result-container {{ color_class }}">
-        <h2 style="color: white;">Assessment Result: <span class="accent">{{ risk_result }} Risk</span></h2>
-        <p style="color: #94a3bc;">Analytical engine indicates a {{ risk_result|lower }} burnout probability.</p>
+        <h2 style="color: white;">Current Assessment: <span class="accent">{{ risk_result }} Risk</span></h2>
+        <p style="color: #94a3bc;">Analytical engine indicates a {{ risk_result|lower }} probability of burnout based on your inputs.</p>
     </div>
 
     <div class="analysis-grid">
-        <div class="solutions-container pros-box">
-            <div class="solutions-header" style="color: #10b981;"><span>✅</span> Your Strengths</div>
-            {% if pros %}
-                {% for tip in pros %}
-                <div class="solution-item pro-item">{{ tip|safe }}</div>
-                {% endfor %}
-            {% else %}
-                <p style="color: #94a3bc; font-size: 0.85rem;">No major strengths detected. Let's build healthy habits!</p>
-            {% endif %}
+        <div class="box pros-box">
+            <h3 style="color: #10b981; margin-bottom: 15px;">✅ Your Strengths</h3>
+            {% for tip in pros %}
+                <p style="font-size: 0.9rem; margin-bottom: 10px; color: #e2e8f0;">{{ tip|safe }}</p>
+            {% endfor %}
         </div>
-
-        <div class="solutions-container cons-box">
-            <div class="solutions-header" style="color: #ef4444;"><span>⚠️</span> Risk Factors</div>
-            {% if cons %}
-                {% for tip in cons %}
-                <div class="solution-item con-item">{{ tip|safe }}</div>
-                {% endfor %}
-            {% else %}
-                <p style="color: #10b981; font-size: 0.85rem;">Excellent! No significant risk markers identified.</p>
-            {% endif %}
+        <div class="box cons-box">
+            <h3 style="color: #ef4444; margin-bottom: 15px;">⚠️ Risk Factors</h3>
+            {% for tip in cons %}
+                <p style="font-size: 0.9rem; margin-bottom: 10px; color: #e2e8f0;">{{ tip|safe }}</p>
+            {% endfor %}
         </div>
     </div>
     {% endif %}
 
-    <section class="media-section">
-        <div class="media-items">
-            <img src="https://images.unsplash.com/photo-1713006615995-acc452dde2e2?w=500&auto=format&fit=crop&q=60" alt="Student Studying">
-            <div class="videobox quote-rotator">
-                <div class="quote-icon">💡</div>
-                <p class="quote-text" id="quoteText">Predicting your well-being...</p>
-                <span class="quote-tag" id="quoteTag">Daily Tip</span>
-                <div class="quote-dots" id="quoteDots"></div>
-            </div>
-            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=500&q=80" alt="Mental Health">
-        </div>
-    </section>
-
-    <section id="process" style="max-width: 1000px; margin: 80px auto; padding: 20px;">
-        <h2 style="text-align: center; color: #10b981; margin-bottom: 40px; font-size: 2rem;">The Assessment Process</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
-            <div class="process-card">
-                <h3 style="color: #10b981;">01. Data Collection</h3>
-                <p style="color: #94a3bc;">We securely process your academic and lifestyle inputs using professional scaling methods.</p>
-            </div>
-            <div class="process-card">
-                <h3 style="color: #10b981;">02. Model Analysis</h3>
-                <p style="color: #94a3bc;">The system utilizes Model Analysis to check correlations between stress and lifestyle.</p>
-            </div>
-            <div class="process-card">
-                <h3 style="color: #10b981;">03. Recovery Plan</h3>
-                <p style="color: #94a3bc;">You receive a categorized list of your strengths and specific areas that need attention.</p>
-            </div>
-        </div>
-    </section>
+    <div class="quote-rotator">
+        <div style="font-size: 1.5rem; margin-bottom: 10px;">💡</div>
+        <p id="quoteText" style="font-style: italic; color: #f1f5f9; min-height: 50px;">"Small breaks prevent big burnouts."</p>
+        <span id="quoteTag" style="font-size: 0.8rem; background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 4px 12px; border-radius: 20px;">Daily Tip</span>
+    </div>
 
     <section id="predictor" class="form-section">
-        <h2 style="text-align: center; color: white;">Risk Assessment Tool</h2>
-        <form id="burnoutForm" method="POST">
+        <h2 style="text-align: center; margin-bottom: 40px;">RISK ASSESSMENT TOOL</h2>
+        <form method="POST">
             {% csrf_token %}
             <div class="form-segment">
-                <h3>Personal & Academic Details</h3>
+                <h3 class="accent">Academic & Personal Profile</h3>
                 <div class="input-row">
                     <input type="number" name="age" placeholder="Age" required>
-                    <input type="number" step="0.01" name="cgpa" placeholder="CGPA" required>
+                    <input type="number" step="0.01" name="cgpa" placeholder="CGPA (e.g. 8.5)" required>
                     <input type="number" name="attendance" placeholder="Attendance %" required>
                 </div>
             </div>
 
             <div class="form-segment">
-                <h3>Daily Lifestyle (Hours)</h3>
+                <h3 class="accent">Lifestyle Indicators (Daily)</h3>
                 <div class="input-row">
                     <input type="number" name="study_hours" placeholder="Study Hours" required>
                     <input type="number" name="sleep_hours" placeholder="Sleep Hours" required>
                 </div>
             </div>
 
-            <div class="form-segment">
-                <h3>Wellness Pulse</h3>
-                <div class="check-group">
-                    <p>Feeling overwhelmed by academic pressure?</p>
-                    <label><input type="radio" name="pressure" value="yes" required> Yes</label>
-                    <label><input type="radio" name="pressure" value="no"> No</label>
-                </div>
-                <div class="check-group">
-                    <p>Experiencing frequent anxiety?</p>
-                    <label><input type="radio" name="anxiety" value="yes" required> Yes</label>
-                    <label><input type="radio" name="anxiety" value="no"> No</label>
-                </div>
-            </div>
+            <div class="mental-pulse-section">
+    <h3 style="color: #00d1b2;">Mental Pulse</h3>
 
-            <button type="submit" class="predict">Analyze My Risk</button>
+    <div class="question-group">
+        <p>Do you feel overwhelmed by academic pressure?</p>
+        <div class="options-row">
+            <div class="option">
+                <input type="radio" id="pressure_yes" name="academic_pressure" value="yes">
+                <label for="pressure_yes">YES</label>
+            </div>
+            <div class="option">
+                <input type="radio" id="pressure_no" name="academic_pressure" value="no">
+                <label for="pressure_no">NO</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-group">
+        <p>Do you experience frequent anxiety?</p>
+        <div class="options-row">
+            <div class="option">
+                <input type="radio" id="anxiety_yes" name="anxiety" value="yes">
+                <label for="anxiety_yes">YES</label>
+            </div>
+            <div class="option">
+                <input type="radio" id="anxiety_no" name="anxiety" value="no">
+                <label for="anxiety_no">NO</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <button type="submit" class="predict-btn">ANALYSE MY RISK</button>
+            
         </form>
+    </section>
+    <section id="progress-section" class="process-container" style="padding-top: 0;">
+        <div style="max-width: 850px; margin: 0 auto; padding: 30px; background: #1e293b; border-radius: 16px; border: 1px solid #334155;">
+            <h2 style="color: #10b981; margin-bottom: 25px;">Real Progress Tracking</h2>
+
+            {% if current_sleep %}
+                <div class="motivation-box" style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                    <p style="color: #10b981; font-size: 1.1rem; margin: 0; font-weight: 600;">{{ motivation }}</p>
+                </div>
+
+                <div style="background: #0f172a; padding: 25px; border-radius: 12px; border-bottom: 4px solid #10b981;">
+                    <span style="color: #94a3b8; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Sleep Consistency</span>
+                    <div style="display: flex; align-items: baseline; gap: 15px; margin: 10px 0;">
+                        <h2 style="color: white; font-size: 2.5rem; margin: 0;">{{ current_sleep }}h</h2>
+                        <span style="color: #10b981; font-weight: bold;">
+                            {% if sleep_diff > 0 %}+{{ sleep_diff }}h improvement{% endif %}
+                        </span>
+                    </div>
+                    <div style="background: #334155; height: 8px; border-radius: 4px; overflow: hidden;">
+                        <div style="background: #10b981; width: {{ sleep_percentage }}%; height: 100%;"></div>
+                    </div>
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 40px; color: #94a3b8;">
+                    <p>No data recorded yet. Use the <strong>Predictor Tool</strong> above to see your progress!</p>
+                </div>
+            {% endif %}
+        </div>
     </section>
 
     <script>
         const quotes = [
-            { text: "Rest is not a reward — it's a requirement for peak performance.", tag: "🧠 Recovery" },
-            { text: "You can't pour from an empty cup. Take care of yourself first.", tag: "❤️ Self-Care" },
+            { text: "Rest is not a reward—it's a requirement for peak performance.", tag: "🧠 Recovery" },
+            { text: "Your health is an investment, not an expense.", tag: "📊 Perspective" },
             { text: "Small breaks prevent big burnouts. Step away before you break down.", tag: "⏸️ Breaks" },
-            { text: "Your CGPA doesn't define your worth. Your well-being does.", tag: "📊 Perspective" },
             { text: "Sleep is your brain's save button. Don't skip it.", tag: "🌙 Sleep" }
         ];
 
         let current = 0;
         const textEl = document.getElementById('quoteText');
         const tagEl = document.getElementById('quoteTag');
-        const dotsEl = document.getElementById('quoteDots');
 
-        function buildDots() {
-            dotsEl.innerHTML = quotes.map((_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('');
-        }
-
-        function showQuote(index) {
-            textEl.style.opacity = 0;
-            setTimeout(() => {
-                textEl.textContent = `"${quotes[index].text}"`;
-                tagEl.textContent = quotes[index].tag;
-                textEl.style.opacity = 1;
-                dotsEl.querySelectorAll('span').forEach((d, i) => d.classList.toggle('active', i === index));
-            }, 400);
-        }
-
-        buildDots();
-        showQuote(0);
         setInterval(() => {
             current = (current + 1) % quotes.length;
-            showQuote(current);
-        }, 4500);
+            textEl.style.opacity = 0;
+            setTimeout(() => {
+                textEl.textContent = `"${quotes[current].text}"`;
+                tagEl.textContent = quotes[current].tag;
+                textEl.style.opacity = 1;
+            }, 500);
+        }, 5000);
     </script>
 </body>
 </html>
