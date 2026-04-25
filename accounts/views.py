@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 
-
 ML_DIR = os.path.join(settings.BASE_DIR, 'ml_assets')
 
 try:
@@ -18,7 +17,6 @@ try:
 except Exception as e:
     print(f"Error loading ML assets: {e}")
     MODEL, SCALER, FEATURES = None, None, None
-
 
 def register_view(request):
     if request.method == "POST":
@@ -42,12 +40,12 @@ def login_view(request):
             messages.error(request, "Invalid username or password.")
     return render(request, "accounts/login.html")
 
-
 @login_required(login_url='login')
 def dashboard_view(request):
     risk_result = None
-    color_class = ""  
-    solutions = []  
+    color_class = "" 
+    pros = [] 
+    cons = [] 
 
     if request.method == 'POST':
         try:
@@ -79,28 +77,37 @@ def dashboard_view(request):
             df = df[FEATURES]
 
             if MODEL and SCALER:
-                
                 scaled_data = SCALER.transform(df)
                 prediction = MODEL.predict(scaled_data)[0]
 
                 if prediction == 2:
                     risk_result, color_class = "High", "high-risk"
-                    solutions.append("🔴 **Immediate Priority:** Model indicators suggest a critical strain level. Professional counseling is advised.")
                 elif prediction == 1:
                     risk_result, color_class = "Moderate", "mod-risk"
-                    solutions.append("🟡 **Advisory:** Analysis shows rising stress markers. Implementing a structured recovery day is recommended.")
                 else:
                     risk_result, color_class = "Low", "low-risk"
-                    solutions.append("🟢 **Optimal Balance:** Analytical engine confirms stable well-being. Continue your current routine.")
 
-                if sleep_hrs < 6:
-                    solutions.append("😴 **Restorative Sleep:** Current sleep patterns are below the cognitive threshold. Aim for 7+ hours.")
+               
+                if sleep_hrs >= 7.5:
+                    pros.append("<strong>🛌 Excellent Sleep Hygiene:</strong> Your current sleep duration is a massive shield against mental fatigue.")
+                elif sleep_hrs < 6.5:
+                    cons.append("<strong>🛌 Sleep Deprivation:</strong> Current sleep patterns are critically low. Chronic sleep debt leads to long-term cognitive burnout.")
                 
-                if study_hrs > 9:
-                    solutions.append("📚 **Strategic Recovery:** High concentration periods detected. Use the 50/10 rule to sustain focus.")
+              
+                if 4.0 <= study_hrs <= 8.0:
+                    pros.append("<strong>📚 Balanced Study Routine:</strong> You've found the 'Sweet Spot' for consistent learning without physical exhaustion.")
+                elif study_hrs > 9.0:
+                    cons.append("<strong>📚 Hyper-Focus Risk:</strong> Studying over 9 hours often yields diminishing returns and elevates stress markers.")
                 
-                if pressure_str == 'yes' or anxiety_str == 'yes':
-                    solutions.append("🧘 **Wellness Pulse:** Analysis suggests high cortisol triggers. Practice 5 minutes of focused breathing.")
+              
+                if pressure_str == 'no' and anxiety_str == 'no':
+                    pros.append("<strong>🧠 Mental Resilience:</strong> Model analysis confirms stable emotional markers with low academic pressure.")
+                else:
+                    cons.append("<strong>🧠 High Cortisol Triggers:</strong> Analysis suggests high pressure triggers. Practice 5 minutes of focused breathing daily.")
+
+               
+                if cgpa > 8.0 and attendance > 80:
+                    pros.append("<strong>📈 Academic Stability:</strong> Your strong attendance and CGPA act as a buffer against exam-time panic.")
 
             else:
                 messages.error(request, "Analytical Engine assets are currently unavailable.")
@@ -111,8 +118,10 @@ def dashboard_view(request):
     return render(request, 'accounts/dashboard.html', {
         'risk_result': risk_result, 
         'color_class': color_class,
-        'solutions': solutions  
+        'pros': pros,
+        'cons': cons
     })
+
 def logout_view(request):
     logout(request)
     return redirect('login')

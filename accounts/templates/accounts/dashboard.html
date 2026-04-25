@@ -7,10 +7,7 @@
     <title>Burnout Predictor - Dashboard</title>
     <link rel="stylesheet" href="{% static 'accounts/css/dashboard_style.css' %}">
     <style>
-    
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         .result-container {
             max-width: 850px;
@@ -22,7 +19,6 @@
             animation: fadeIn 0.6s ease-in;
         }
         
-    
         .high-risk { border: 2px solid #ef4444 !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
         .mod-risk { border: 2px solid #f59e0b !important; box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
         .low-risk { border: 2px solid #10b981 !important; box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
@@ -31,37 +27,48 @@
         .mod-risk .accent { color: #f59e0b; }
         .low-risk .accent { color: #10b981; }
 
-     
-        .solutions-container {
-            max-width: 850px;
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            max-width: 900px;
             margin: 20px auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .solutions-container {
             padding: 25px;
             background: rgba(30, 41, 59, 0.9);
             border-radius: 14px;
-            border: 1px solid rgba(16, 185, 129, 0.4);
             text-align: left;
-            animation: fadeIn 0.8s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
+        .pros-box { border-top: 5px solid #10b981; }
+        .cons-box { border-top: 5px solid #ef4444; }
+
         .solutions-header {
-            color: #10b981;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
         .solution-item {
             color: #e2e8f0;
             padding: 12px 15px;
             margin-bottom: 10px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
-            border-left: 4px solid #10b981;
             line-height: 1.6;
+            font-size: 0.9rem;
         }
 
-       
+        .pro-item { border-left: 4px solid #10b981; }
+        .con-item { border-left: 4px solid #ef4444; }
+
         .process-card {
             background: #1e293b; 
             padding: 25px; 
@@ -69,17 +76,13 @@
             border-top: 4px solid #10b981;
             transition: transform 0.3s ease;
         }
-        .process-card:hover {
-            transform: translateY(-5px);
-        }
+        .process-card:hover { transform: translateY(-5px); }
 
-      
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        
         .quote-rotator {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: 14px; padding: 30px 28px; background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -99,7 +102,7 @@
         <div class="header-items">
             <h1>BURNOUT <span class="accent">INSIGHT</span></h1>
             <div class="divider"></div>
-            <p>Data-driven burnout risk assessment and recovery for the modern student.</p>
+            <p>Data-driven burnout risk assessment for GNIT students.</p>
         </div>
     </header>
 
@@ -115,19 +118,32 @@
     {% if risk_result %}
     <div class="result-container {{ color_class }}">
         <h2 style="color: white;">Assessment Result: <span class="accent">{{ risk_result }} Risk</span></h2>
-        <p style="color: #94a3bc;">Your data indicates a {{ risk_result|lower }} risk of academic burnout.</p>
+        <p style="color: #94a3bc;">Analytical engine indicates a {{ risk_result|lower }} burnout probability.</p>
     </div>
 
-    {% if solutions %}
-    <div class="solutions-container">
-        <div class="solutions-header"><span>💡</span> Recommended Recovery Plan</div>
-        <div style="list-style: none; padding: 0;">
-            {% for tip in solutions %}
-            <div class="solution-item">{{ tip|safe }}</div>
-            {% endfor %}
+    <div class="analysis-grid">
+        <div class="solutions-container pros-box">
+            <div class="solutions-header" style="color: #10b981;"><span>✅</span> Your Strengths</div>
+            {% if pros %}
+                {% for tip in pros %}
+                <div class="solution-item pro-item">{{ tip|safe }}</div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #94a3bc; font-size: 0.85rem;">No major strengths detected. Let's build healthy habits!</p>
+            {% endif %}
+        </div>
+
+        <div class="solutions-container cons-box">
+            <div class="solutions-header" style="color: #ef4444;"><span>⚠️</span> Risk Factors</div>
+            {% if cons %}
+                {% for tip in cons %}
+                <div class="solution-item con-item">{{ tip|safe }}</div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #10b981; font-size: 0.85rem;">Excellent! No significant risk markers identified.</p>
+            {% endif %}
         </div>
     </div>
-    {% endif %}
     {% endif %}
 
     <section class="media-section">
@@ -144,22 +160,22 @@
     </section>
 
     <section id="process" style="max-width: 1000px; margin: 80px auto; padding: 20px;">
-    <h2 style="text-align: center; color: #10b981; margin-bottom: 40px; font-size: 2rem;">The Assessment Process</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
-        <div class="process-card">
-            <h3 style="color: #10b981;">01. Data Digitization</h3>
-            <p style="color: #94a3bc;">We securely collect academic and lifestyle metrics, converting them into standardized data points for evaluation.</p>
+        <h2 style="text-align: center; color: #10b981; margin-bottom: 40px; font-size: 2rem;">The Assessment Process</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+            <div class="process-card">
+                <h3 style="color: #10b981;">01. Data Collection</h3>
+                <p style="color: #94a3bc;">We securely process your academic and lifestyle inputs using professional scaling methods.</p>
+            </div>
+            <div class="process-card">
+                <h3 style="color: #10b981;">02. Model Analysis</h3>
+                <p style="color: #94a3bc;">The system utilizes Model Analysis to check correlations between stress and lifestyle.</p>
+            </div>
+            <div class="process-card">
+                <h3 style="color: #10b981;">03. Recovery Plan</h3>
+                <p style="color: #94a3bc;">You receive a categorized list of your strengths and specific areas that need attention.</p>
+            </div>
         </div>
-        <div class="process-card">
-            <h3 style="color: #10b981;">02. Model Analysis</h3>
-            <p style="color: #94a3bc;">Our computational engine analyzes your profile against multi-dimensional stress indicators to identify risk correlations.</p>
-        </div>
-        <div class="process-card">
-            <h3 style="color: #10b981;">03. Predictive Insight</h3>
-            <p style="color: #94a3bc;">You receive a refined risk classification and a tailored solution plan to optimize your mental well-being.</p>
-        </div>
-    </div>
-</section>
+    </section>
 
     <section id="predictor" class="form-section">
         <h2 style="text-align: center; color: white;">Risk Assessment Tool</h2>
