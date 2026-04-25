@@ -49,7 +49,7 @@ def predict_burnout(request):
     if request.method == 'POST':
         current_sleep = float(request.POST.get('sleep_hours'))
         
-        previous_record = BurnoutData.objects.filter(user=request.user).order_by('-created_at').first()
+        previous_record = BurnoutRecord.objects.filter(user=request.user).order_by('-created_at').first()
         
         message = ""
         if previous_record:
@@ -61,7 +61,7 @@ def predict_burnout(request):
             else:
                 message = "Keep pushing for that extra hour of rest tonight!"
 
-        new_record = BurnoutData.objects.create(user=request.user, sleep_hours=current_sleep)
+        new_record = BurnoutRecord.objects.create(user=request.user, sleep_hours=current_sleep)
         return render(request, 'dashboard.html', {'motivation': message})
 from .models import BurnoutRecord
 
