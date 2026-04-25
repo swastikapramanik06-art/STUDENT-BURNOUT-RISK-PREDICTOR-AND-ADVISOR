@@ -89,8 +89,7 @@ def your_predict_view(request):
             'sleep_percentage': min((current_sleep / 8) * 100, 100),
         }
         return render(request, 'dashboard.html', context)
-from .models import BurnoutRecord  # Make sure this is imported
-
+from .models import BurnoutRecord  
 def logout_view(request):
     logout(request)
     return redirect('login')
@@ -104,7 +103,7 @@ def dashboard_view(request):
     pros = [] 
     cons = [] 
     
-    # --- PROGRESS TRACKING VARIABLES ---
+
     motivation = ""
     sleep_diff = 0
     current_sleep = 0
@@ -114,7 +113,7 @@ def dashboard_view(request):
         
         
         try:
-            # 1. Extract Form Data
+          
             age = float(request.POST.get('age', 20))
             gender_str = request.POST.get('gender')
             gender = 1 if gender_str == 'male' else 0
@@ -122,12 +121,12 @@ def dashboard_view(request):
             attendance = float(request.POST.get('attendance', 75))
             study_hrs = float(request.POST.get('study_hours', 0))
             sleep_hrs = float(request.POST.get('sleep_hours', 0))
-            pressure_str = request.POST.get('academic_pressure') # Fixed name to match your HTML
+            pressure_str = request.POST.get('academic_pressure') 
             pressure = 5 if pressure_str == 'yes' else 1
             anxiety_str = request.POST.get('anxiety')
             anxiety = 5 if anxiety_str == 'yes' else 1
 
-            # 2. CALC PROGRESS BEFORE SAVING NEW RECORD
+            
             current_sleep = sleep_hrs
             previous_record = BurnoutRecord.objects.filter(user=request.user).order_by('-created_at').first()
             
@@ -144,7 +143,7 @@ def dashboard_view(request):
 
             sleep_percentage = min((current_sleep / 8) * 100, 100)
 
-            # 3. ML PREDICTION LOGIC
+           
             input_dict = {
                 'age': age, 'gender': gender, 'course': 1, 'year': 3,
                 'daily_study_hours': study_hrs, 'daily_sleep_hours': sleep_hrs,
@@ -172,7 +171,7 @@ def dashboard_view(request):
                 
 
                 
-                # 5. GENERATE PROS/CONS
+               
                 pros = []
                 cons = []
                 if sleep_hrs >= 7.5:
@@ -182,7 +181,7 @@ def dashboard_view(request):
                 strengths_text = "\n".join(pros) if pros else "No specific strengths noted."
                 risks_text = "\n".join(cons) if cons else "No major risk factors noted."
 
-# 3. NOW SAVE EVERYTHING
+
             BurnoutRecord.objects.create(
                user=request.user,
                risk_score=float(prediction),
@@ -203,15 +202,13 @@ def dashboard_view(request):
         except Exception as e:
             pressure_str = request.POST.get('academic_pressure')
 
-    # --- FINAL CONTEXT: MUST INCLUDE ALL PROGRESS DATA ---
-    # Change the return at the bottom of dashboard_view to this:
     return render(request, 'accounts/dashboard.html', {
     'risk_result': risk_result, 
     'color_class': color_class,
     'pros': pros,
     'cons': cons,
     'motivation': motivation,
-    'current_sleep': current_sleep if current_sleep > 0 else None, # Force show
+    'current_sleep': current_sleep if current_sleep > 0 else None, 
     'sleep_diff': round(sleep_diff, 1),
     'sleep_percentage': sleep_percentage
 })
